@@ -1,0 +1,165 @@
+\section{Enumerability} % (fold)
+\label{sec:enumerability}
+A function that enumerates a set $S$ is a mapping $f$ from a subset of the positive integers $P$ to $S$.
+The requirement is that this function be surjective (each element of the set be associated with \emph{at least one} positive integer, and so show up \emph{at least once} in the list), not that the domain be the whole of $P$.
+When the domain isn't $P$, we say that $f$ is a \emph{partial function} of positive integers, as opposed to a \emph{total function}.
+
+Ordered tuples of positive integers can be enumerated in two ways:
+\begin{enumerate}
+  \item Cantor's: tuples come in blocks of increasing sum of entries and within each block tuples appear in order of increasing first entry: (1, 1); (1, 2), (2, 1); (1, 3), (2, 2), (3, 1); (1, 4), (2, 3), (3, 2), (4, 1); \ldots.
+  This defines a function $G\colon P \to P \times P$;
+  \item Imagine an enumerable infinity of rooms.
+  For tuples $(1, n)$, use every other room.
+  For tuples $(2, n)$, use every other room \emph{among those remaining vacant}, for tuples $(3, n)$, use every other room then remaining, and so on:
+  \begin{itemize}
+    \newcommand\room{\vartextvisiblespace[\widthof{$(1,1)$}]}
+    \item $(1,1), \room, (1,2), \room, (1,3), \room, (1,4), \room, (1,5), \room, \ldots$
+    \item $(1,1), (2,1), (1,2), \room, (1,3), (2,2), (1,4), \room, (1,5), (2,3), \ldots$
+    \item $(1,1), (2,1), (1,2), (3,1), (1,3), (2,2), (1,4), \room, (1,5), (2,3), \ldots$
+    \item $(1,1), (2,1), (1,2), (3,1), (1,3), (2,2), (1,4), (4,1), (1,5), (2,3), \ldots$
+  \end{itemize}
+\end{enumerate}
+
+Applying an enumerating function $f$ to a positive integer may be called \emph{decoding}, while going the other way may be called \emph{encoding}.
+For example, the function $J\colon P \times P \to P$, $(m,n) \mapsto (m^2+2mn+n^2-n-3n+2)/2$ is the encoding function for the decoding function $G$.
+
+Enumerating all triples of positive integers can be achieved by building on Cantor's enumeration of all tuples of positive integers.
+Define a map $H\colon P \times P \to P \times P \times P$ by $(i,j) \mapsto (i, G(j))$, whence we have:
+\begin{align*}
+  n &\mapsto G(n) \equiv (K(n), L(n)) \\
+    &\mapsto (K(n), G(L(n))) \equiv (K(n), K(L(n)), L(L(n)))
+\end{align*}
+It is easily seen that no triple is missed.
+Indeed, let $(p,q,r)$ be arbitrary; then there is an $m = J(q,r)$ such that $G(m) = (q,r)$, and then there is an $n = J(p,m)$ such that $G(n) = (p,m)$.
+The triple associated with $n$ is then precisely $(p,q,r)$, as desired.
+
+This method can be used to enumerate $k$-tuples for any fixed $k$ by replacing the last component $n$ in tuples with the $k-1$-tuple that appears in the $n$th place in the enumeration of all $k-1$-tuples.
+
+In turn, the enumeration of all $k$-tuples allows us to enumerate all finite sequences by tuples of positive integers (and thus, indirectly, by single numbers).
+Let $G_1, G_2 \equiv G, G_3, G_4, \ldots$ be $k$-tuple enumerations.
+Then tuples $(k, a)$ code for sequences $s$ of length $k$ where $G_k(a) = s$.
+Another approach is possible using prime decomposition: $2^i3^j5^k7^m11^n\ldots \mapsto (i,j,k,m,n,\ldots) = s$, owing to the fact every integer greater than $1$ can be decomposed in a unique way.
+
+\begin{exercise}[1.1]
+  Let $f\colon A \to B$ be injective and $f\inv$ be its inverse (\emph{C\&L} defines the inverse in a weird way, so this is legitimate \ldots).
+  Then $f\inv$ is total if and only if $f$ is surjective, and $f\inv$ is surjective if and only if $f$ is total.
+\end{exercise}
+\begin{proof}
+  Let $f$ be surjective.
+  Then for every $b \in B$ there is some $a \in A$ such that $f(a) = b$.
+  Moreover, this $a$ is unique by the injectivity of $f$.
+  This defines a total inverse.
+  Now let $f\inv$ be total.
+  Then it is defined for every element $b \in B$, whence for every $b \in B$ there is one and only $a \in A$ such that $f(a) = b$, and the surjectivity of $f$ follows.
+
+  To show the converse, note that $f^{-1-1} = f$.
+  Let then $f^{-1-1} = f$ be total, whence $f\inv$ is surjective by the first assertion, and let $f\inv$ be surjective, whence $f^{-1-1} = f$ is again total, as desired.
+\end{proof}
+
+\begin{exercise}[1.2]
+  Let $f\colon A \to B$ and $g\colon B\to C$.
+  Define $h = gf \colon A \to C$ by $h(a) = g(f(a))$.
+  \begin{itemize}
+    \item Let $f$ and $g$ be both total.
+    $f(a)$ is defined for every $a \in A$, and $g(f(a))$ is defined for every $f(a) \in B$, whence $gf$ is total.
+    \item Let $f$ and $g$ be both surjective.
+    By the surjectivity of $g$, for each $c \in C$ there is a $b \in B$ such that $g(b) = c$.
+    By the surjectivity of $f$, for each $b \in B$ there is an $a \in A$ such that $f(a) = b$.
+    Combining these, we see that for every $c \in C$ there is an $a \in A$ such that $gf(a) = c$, whence $gf$ is surjective also.
+    \item Let $f$ and $g$ be both injective.
+    Then $gf$ is injective also:
+    \begin{align*}
+      g(f(a')) = g(f(a'')) \implies f(a') = f(a'') \implies a' = a''
+    \end{align*}
+  \end{itemize}
+\end{exercise}
+
+\begin{exercise}[1.3]
+  A correspondence between $A$ and $B$ is a total, surjective and injective function from $A$ to $B$.
+  Two sets are equinumerous if and only if there is a correspondence between them.
+  \begin{itemize}
+    \item Any set $A$ is equinumerous with itself.
+    Indeed, take the identity function $\id\colon A \to A$ defined by $a \mapsto a$.
+    Clearly, $\id$ is injective ($\id(a') = \id(a'') \implies a' = a''$), surjective (for every $a \in A$ there is an $a = a = \id(a) \in A$), and total.
+    \item If $A$ is equinumerous with $B$, then $B$ is equinumerous with $A$.
+    Let $f$ be a total bijection from $A$ to $B$, and let $f\inv$ be its inverse.
+    By an earlier result, $f\inv$ is total and surjective.
+    The injectivity of $f\inv$ follows from the definition, whence $f\inv$ is a correspondence between $B$ and $A$, and the result follows.
+    \item If $A$ is equinumerous with $B$ and $B$ is equinumerous with $C$, then $A$ is equinumerous with $C$.
+    By the previous exercise, $gf = g \circ f$ is a correspondence, as desired.
+  \end{itemize}
+\end{exercise}
+
+\begin{exercise}[1.4]
+  A set $A$ has $n$ elements if and only if it is equinumerous with $\{1,2,\ldots,n\}$.
+  A nonempty set $A$ is finite if and only if there exists a positive integer $n$ such that $A$ has $n$ elements.
+  Any enumerable set is either finite or equinumerous with the set of all positive integers.
+\end{exercise}
+\begin{proof}
+  Without loss of generality, let $A$ be an infinite subset of the positive integers $P$.
+  Define a sequence of infinite subsets
+  \begin{equation*}
+    \ldots \subset A_n \subset \ldots \subset A_2 \subset A_1
+  \end{equation*}
+  as follows: put $A_1 = A$.
+  By the well-ordering of $P$, the subset $A_n$ has a least element $a_n$.
+  Define $f(n) = a_n$ and put $A_{n+1} = A_n \setminus \{a_n\}$.
+  Since $A_n$ was infinite, it follows that $A_{n+1}$ is also infinite.
+  To show that the $f$ so defined is injective, suppose $f(A') = f(A'')$.
+  Then $A'$ and $A''$ have the same least element $a$ and are the same by the construction.
+  To show that $f$ is surjective, let $a \in A$ be arbitrary.
+  Then there exists an $A_n$ such that $a$ is its least element, whence $f(n) = a$ is defined.
+  We have a bijection from $P$ to $A$, which shows that $A$ is equinumerous with $P$, as desired.
+\end{proof}
+
+\begin{exercise}[1.5]
+  Let $X$ be the set of rational numbers $\pm\frac{m}{n}$ (written in lowest terms) where $n = 2^k$ is some power of two.
+  Let $Y$ be the set of those subsets of $P$ that are either finite or cofinite (a subset of $P$ is cofinite if its complement in $P$ is finite).
+  These sets are equinumerous.
+\end{exercise}
+\begin{proof}
+  Each positive element in $X$ can be uniquely represented as a tuple $(m,k)$ where $m$ is the numerator and $k$ is the power of the denominator, whence $X$ is equinumerous with the rational numbers; and since we know the rational numbers are denumerable, $X$ is denumerable also.
+
+  Now enumerate $Y$ as follows: from Example 1.10, we know that finite subsets of the positive integers are enumerable.
+  List them as $Y_1,Y_2, \ldots$ and put their respective complements $Y_{-1}, Y_{-2}$ in between: $Y_1, Y_{-1}, Y_2, Y_{-2}, \ldots$.
+  Clearly, every finite or cofinite subset occurs in this sequence, whence $Y$ is denumerable.
+
+  Since $X$ and $Y$ are both denumerable, they are both equinumerous with the positive integers by an earlier exercise, and thus equinumerous with each other.
+\end{proof}
+
+\begin{exercise}[1.6]
+  The set of all finite subsets of an enumerable set $A$ is enumerable.
+\end{exercise}
+\begin{proof}
+  Since $A$ is enumerable, its elements can be listed as the sequence
+  \begin{equation*}
+    a_1, a_2, a_3, a_4, \ldots
+  \end{equation*}
+  We can enumerate the finite subsets of $A$ as follows: first write down the empty set, then write down the subsets such that the indices of their elements $a_1, \ldots, a_k$ add up to $1$ ($1 + \ldots + k = 1$), then the subsets with indices adding up to $2$, and so on:
+  \begin{equation}
+    \emptyset, \{a_1\}, \{a_2\}, \{a_1, a_2\}, \{a_3\}, \ldots
+  \end{equation}
+  Clearly, each finite set $A' \subset A$ occurs in this sequence: it consists of finitely many elements $a_k$ whose finite indices add up to some finite $n$.
+\end{proof}
+
+\begin{exercise}[1.7]
+  Let $A = \{A_1, A_2, \ldots\}$ be an enumerable family of enumerable sets $A_i$.
+  The union $\cup A$ of the family $A$ is enumerable.
+\end{exercise}
+\begin{proof}
+  Using the axiom of choice, pick an enumeration $a_{i1}, a_{i2}, a_{i3}, a_{i4}, \ldots$ for each $A_i$.
+  Clearly, the members of $\cup A$ are elements $a_{ij}$ for some finite $i,j \in P$, whence $\cup A$ is enumerable by Cantor's method of enumerating all pairs of positive integers.
+\end{proof}
+
+\begin{summary}
+  \begin{itemize}
+    \item A subset of positive integers contains a smallest element (well-ordering principle);
+    \item To show that a set is enumerable, list its elements in a sequence that doesn't get ``stuck'' when listing an infinite block of elements.
+    Repetitions aren't important, just make sure each element of interest occurs at least once in the sequence.
+    Alternatively, demonstrate a correspondence between the set and another set known to be enumerable;
+    \item Examples: positive integers, the set of $k$-tuples of positive integers for any fixed $k$, rational numbers, the set of finite sequences of positive integers, the set of finite subsets of an enumerable set, any subset of an enumerable set, and the union of an enumerable family of enumerable sets;
+    \item Equinumerosity is reflexive, transitive, and symmetric;
+    \item An enumerable set is either finite or equinumerous with the positive integers.
+  \end{itemize}
+\end{summary}
+% section enumerability (end)

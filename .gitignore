@@ -1,7 +1,11 @@
 *.aux
 *.log
 *.fls
+*.toc
+*.out
 
 *.pdf
 
 *.fdb_latexmk
+*.sublime-project
+*.sublime-workspace

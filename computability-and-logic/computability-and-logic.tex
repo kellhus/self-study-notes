@@ -1,16 +1,22 @@
-\documentclass{article}
+\documentclass[a4paper]{article}
 
+\usepackage[left=4.4cm, right=4.4cm, top=1cm, bottom=2cm]{geometry}
 \usepackage{amssymb}
 \usepackage{amsthm}
 \usepackage{amsmath}
 \usepackage{calc}
+\usepackage{hyperref}
 
 \theoremstyle{definition}
 \newtheorem{exercise}{Exercise}
+\newtheorem{example}{Example}
 
 \theoremstyle{remark}
 \newtheorem*{remark}{Remark}
 \newtheorem*{proofidea}{Proof idea}
+
+\newenvironment{summary}
+{\centering\textbf{Summary}\footnotesize\setlength\itemsep{1em}}
 
 \newcommand\vartextvisiblespace[1][.5em]{%
   \makebox[#1]{%
@@ -21,44 +27,11 @@
     \kern.07em
   }%
 }
+\newcommand\inv{^{-1}}
+\newcommand\id{\operatorname{id}}
 
 
 \begin{document}
-
-A function that enumerates a set $S$ is a mapping $f$ from a subset of the positive integers $P$ to $S$.
-The requirement is that this function be surjective (each element of the set be associated with \emph{at least one} positive integer, and so show up \emph{at least once} in the list), not that the domain be the whole of $P$.
-When the domain isn't $P$, we say that $f$ is a \emph{partial function} of positive integers, as opposed to a \emph{total function}.
-
-Ordered pairs of positive integers can be enumerated in two ways:
-\begin{enumerate}
-  \item Cantor's: pairs come in blocks of increasing sum of entries and within each block pairs appear in order of increasing first entry: (1, 1); (1, 2), (2, 1); (1, 3), (2, 2), (3, 1); (1, 4), (2, 3), (3, 2), (4, 1); \ldots;
-  \item Imagine an enumerable infinity of rooms.
-  For pairs $(1, n)$, use every other room.
-  For pairs $(2, n)$, use every other room \emph{among those remaining vacant}, for pairs $(3, n)$, use every other room then remaining, and so on:
-  \begin{itemize}
-    \newcommand\room{\vartextvisiblespace[\widthof{$(1,1)$}]}
-    \item $(1,1), \room, (1,2), \room, (1,3), \room, (1,4), \room, (1,5), \room, \ldots$
-    \item $(1,1), (2,1), (1,2), \room, (1,3), (2,2), (1,4), \room, (1,5), (2,3), \ldots$
-    \item $(1,1), (2,1), (1,2), (3,1), (1,3), (2,2), (1,4), \room, (1,5), (2,3), \ldots$
-    \item $(1,1), (2,1), (1,2), (3,1), (1,3), (2,2), (1,4), (4,1), (1,5), (2,3), \ldots$
-  \end{itemize}
-\end{enumerate}
-
-Applying an enumerating function $f$ to a positive integer may be called \emph{decoding}, while going the other way may be called \emph{encoding}.
-
-
-
-\begin{exercise}[Boolos 1.1]
-  Exercise statement.
-\end{exercise}
-
-\begin{proofidea}
-  Proof idea.
-\end{proofidea}
-
-\begin{proof}
-  Proof.
-\end{proof}
-
-
+\include{ch1}
+\include{ch2}
 \end{document}
