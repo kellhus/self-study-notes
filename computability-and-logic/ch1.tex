@@ -40,6 +40,12 @@ Let $G_1, G_2 \equiv G, G_3, G_4, \ldots$ be $k$-tuple enumerations.
 Then tuples $(k, a)$ code for sequences $s$ of length $k$ where $G_k(a) = s$.
 Another approach is possible using prime decomposition: $2^i3^j5^k7^m11^n\ldots \mapsto (i,j,k,m,n,\ldots) = s$, owing to the fact every integer greater than $1$ can be decomposed in a unique way.
 
+Of particular importance to computability is the set of finite strings $S_{a_1} \cdots S_{a_k}$ from a finite or enumerable ``alphabet'' of symbols $S_1, S_2, S_3, \ldots$.
+Simply consider a correspondence between a string and the sequence of positive integers $(a_1,\ldots,a_k)$.
+Then, for example, using prime decomposition we can assign code words to the strings.
+Given the English alphabet, the string ``CAB'' -- $(3,1,2)$ -- can be coded by $600 = 2^3 \cdot 3^1 \cdot 5^2$.
+
+
 \begin{exercise}[1.1]
   Let $f\colon A \to B$ be injective and $f\inv$ be its inverse (\emph{C\&L} defines the inverse in a weird way, so this is legitimate \ldots).
   Then $f\inv$ is total if and only if $f$ is surjective, and $f\inv$ is surjective if and only if $f$ is total.
@@ -105,8 +111,8 @@ Another approach is possible using prime decomposition: $2^i3^j5^k7^m11^n\ldots 
   By the well-ordering of $P$, the subset $A_n$ has a least element $a_n$.
   Define $f(n) = a_n$ and put $A_{n+1} = A_n \setminus \{a_n\}$.
   Since $A_n$ was infinite, it follows that $A_{n+1}$ is also infinite.
-  To show that the $f$ so defined is injective, suppose $f(A') = f(A'')$.
-  Then $A'$ and $A''$ have the same least element $a$ and are the same by the construction.
+  To show that the $f$ so defined is injective, suppose $A' \ne A''$.
+  Then $A'$ and $A''$ have different least elements $a'$ and $a''$ whence $f(A') \ne f(A'')$.
   To show that $f$ is surjective, let $a \in A$ be arbitrary.
   Then there exists an $A_n$ such that $a$ is its least element, whence $f(n) = a$ is defined.
   We have a bijection from $P$ to $A$, which shows that $A$ is equinumerous with $P$, as desired.
@@ -154,10 +160,15 @@ Another approach is possible using prime decomposition: $2^i3^j5^k7^m11^n\ldots 
 \begin{summary}
   \begin{itemize}
     \item A subset of positive integers contains a smallest element (well-ordering principle);
+    \item Examples of enumerable sets: positive integers, the set of $k$-tuples of positive integers for any fixed $k$, rational numbers, the set of finite sequences of positive integers, the set of finite strings from a finite or enumerable alphabet of symbols, the set of finite subsets of an enumerable set, any subset of an enumerable set, and the union of an enumerable family of enumerable sets;
     \item To show that a set is enumerable, list its elements in a sequence that doesn't get ``stuck'' when listing an infinite block of elements.
+    This is the main idea behind Cantor's method of enumerating all pairs of positive integers: Each row or column doesn't terminate, but each diagonal does, and so each diagonal is a finite block, and we can list all the diagonals in succession.
     Repetitions aren't important, just make sure each element of interest occurs at least once in the sequence.
-    Alternatively, demonstrate a correspondence between the set and another set known to be enumerable;
-    \item Examples: positive integers, the set of $k$-tuples of positive integers for any fixed $k$, rational numbers, the set of finite sequences of positive integers, the set of finite subsets of an enumerable set, any subset of an enumerable set, and the union of an enumerable family of enumerable sets;
+
+    Alternatively, demonstrate a correspondence between the set and another set known to be enumerable and/or use the powerful result that the \textbf{union of an enumerable family of sets is enumerable}.
+    In particular, the naturals are enumerable because they are the union of positive integers and an enumerable set given by the correspondence $x \mapsto -(x+1)$ from positive integers.
+    The positive rationals are also enumerable: each set $\left\{\frac{m}{n} : m \in P\right\}$ is enumerable by $m \mapsto \frac{m}{n}$, and the rationals are the enumerable union $\cup_{n=1}^\infty \left\{\frac{m}{n} : m \in P\right\}$.
+
     \item Equinumerosity is reflexive, transitive, and symmetric;
     \item An enumerable set is either finite or equinumerous with the positive integers.
   \end{itemize}
