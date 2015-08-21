@@ -47,19 +47,23 @@ Given the English alphabet, the string ``CAB'' -- $(3,1,2)$ -- can be coded by $
 
 
 \begin{exercise}[1.1]
-  Let $f\colon A \to B$ be injective and $f\inv$ be its inverse (\emph{C\&L} defines the inverse in a weird way, so this is legitimate \ldots).
-  Then $f\inv$ is total if and only if $f$ is surjective, and $f\inv$ is surjective if and only if $f$ is total.
+  Let $f\colon A \to B$ be injective and $f^{-1}$ be its inverse (\emph{C\&L} defines the inverse in a weird way, so this is legitimate \ldots).
+  Then $f^{-1}$ is total if and only if $f$ is surjective, and $f^{-1}$ is surjective if and only if $f$ is total.
 \end{exercise}
 \begin{proof}
   Let $f$ be surjective.
   Then for every $b \in B$ there is some $a \in A$ such that $f(a) = b$.
   Moreover, this $a$ is unique by the injectivity of $f$.
   This defines a total inverse.
-  Now let $f\inv$ be total.
+  Now let $f^{-1}$ be total.
   Then it is defined for every element $b \in B$, whence for every $b \in B$ there is one and only $a \in A$ such that $f(a) = b$, and the surjectivity of $f$ follows.
 
-  To show the converse, note that $f^{-1-1} = f$.
-  Let then $f^{-1-1} = f$ be total, whence $f\inv$ is surjective by the first assertion, and let $f\inv$ be surjective, whence $f^{-1-1} = f$ is again total, as desired.
+  To show the second claim, apply the first assertion to $f^{-1-1}$.
+  We have that $f^{-1-1}$ is total if and only if $f^{-1}$ is surjective.
+  But $f^{-1-1} = f$.
+  \tk
+  Indeed, $f^{-1-1}$ is defined by letting $f^{-1-1}(a)$ be the one and only $b$ such that $f^{-1}(b) = a$, if any such $b$ exists.
+  This completes the proof.
 \end{proof}
 
 \begin{exercise}[1.2]
@@ -88,9 +92,9 @@ Given the English alphabet, the string ``CAB'' -- $(3,1,2)$ -- can be coded by $
     Indeed, take the identity function $\id\colon A \to A$ defined by $a \mapsto a$.
     Clearly, $\id$ is injective ($\id(a') = \id(a'') \implies a' = a''$), surjective (for every $a \in A$ there is an $a = a = \id(a) \in A$), and total.
     \item If $A$ is equinumerous with $B$, then $B$ is equinumerous with $A$.
-    Let $f$ be a total bijection from $A$ to $B$, and let $f\inv$ be its inverse.
-    By an earlier result, $f\inv$ is total and surjective.
-    The injectivity of $f\inv$ follows from the definition, whence $f\inv$ is a correspondence between $B$ and $A$, and the result follows.
+    Let $f$ be a total bijection from $A$ to $B$, and let $f^{-1}$ be its inverse.
+    By an earlier result, $f^{-1}$ is total and surjective.
+    The injectivity of $f^{-1}$ follows from the definition, whence $f^{-1}$ is a correspondence between $B$ and $A$, and the result follows.
     \item If $A$ is equinumerous with $B$ and $B$ is equinumerous with $C$, then $A$ is equinumerous with $C$.
     By the previous exercise, $gf = g \circ f$ is a correspondence, as desired.
   \end{itemize}
@@ -118,19 +122,49 @@ Given the English alphabet, the string ``CAB'' -- $(3,1,2)$ -- can be coded by $
   We have a bijection from $P$ to $A$, which shows that $A$ is equinumerous with $P$, as desired.
 \end{proof}
 
+\begin{lemma}
+  A dyadic rational is a rational number whose denominator is a power of two, i.e. a rational number of the form $\frac{a}{2^b}$.
+  A real number is a dyadic rational if and only if its binary expansion terminates.
+\end{lemma}
+\begin{proof}
+  The binary expansion of a number between $0$ and $1$ is of the form
+  \begin{equation*}
+    0.x_1x_2x_3\cdots = \sum_{k=1}^{\infty}x_k2^{-k} = \sum_{k=1}^{\infty}\frac{x_k}{2^k}
+  \end{equation*}
+  Suppose a number $0 < x < 1$ has a terminating binary expansion.
+  Then its expansion is of the form $0.x_1\cdots x_k$, where $x_k$ is the last $1$ digit.
+  Then
+  \begin{equation*}
+    x = \frac{x_1}{2^1} + \frac{x_2}{2^2} + \ldots + \frac{x_k}{2^k} = \frac{x_12^{k-1} + x_22^{k-2} + \ldots + x_k}{2^k}
+  \end{equation*}
+  Since this is base-$2$, each $x_i$ must be either $0$ or $1$, whence it follows that the denominator and numerator are integers, and the denominator is a power of two, which means $x$ is a dyadic rational.
+
+  Conversely, we must show that if $0 < \frac{a}{2^b} < 1$ is a dyadic rational, then its binary expansion terminates.
+  Observe that $a$ is a finite positive integer, and so can be written as the finite-term sum $x_12^{k-1} + x_22^{k-2} + \ldots + x_k$, where $x_i \in \{0, 1\}$.
+  Since $\frac{a}{2^b} < 1$, it follows that $a < 2^b$.
+  By the definition of binary expansion, $x_1 = 1$, whence $2^{k-1} \le a < 2^b$, and we have $k-1<b$.
+  But $1 \le i \le k$, whence $k-i<b$.
+  Then we can divide each term by $2^b$, obtaining:
+  \begin{equation*}
+    \frac{a}{2^b} = \frac{x_1}{2^{b-k+1}} + \frac{x_2}{2^{b-k+2}} + \ldots + \frac{x_k}{2^b},
+  \end{equation*}
+  which gives us a finite binary expansion; this completes the proof.
+\end{proof}
+
 \begin{exercise}[1.5]
-  Let $X$ be the set of rational numbers $\pm\frac{m}{n}$ (written in lowest terms) where $n = 2^k$ is some power of two.
+  Let $X$ be the set of rational numbers $0 < \frac{m}{n} < 1$ (written in lowest terms) where $n = 2^k$ is some power of two.
   Let $Y$ be the set of those subsets of $P$ that are either finite or cofinite (a subset of $P$ is cofinite if its complement in $P$ is finite).
   These sets are equinumerous.
 \end{exercise}
 \begin{proof}
-  Each positive element in $X$ can be uniquely represented as a tuple $(m,k)$ where $m$ is the numerator and $k$ is the power of the denominator, whence $X$ is equinumerous with the rational numbers; and since we know the rational numbers are denumerable, $X$ is denumerable also.
+  Each element in $X$ can be represented as its finite binary expansion $X_i = x_{i1}x_{i2}\ldots x_{ik}$, where $x_i$ is either $0$ or $1$. This set is enumerable by an earlier result.
+  For each $X_i$, pick then a finite subset $S_i$ of $P$ as follows: $n \in S_i$ if and only if $x_{in} = 1$.
+  This defines a function $f$ from $X$ to $Y$.
+  This function is clearly injective; further, for every finite subset we can list a finite sequence of $0$s and $1$s using the characteristic function, whence the function is surjective, and the result follows.
 
-  Now enumerate $Y$ as follows: from Example 1.10, we know that finite subsets of the positive integers are enumerable.
+  As a bonus, enumerate $Y$: from Example 1.10, we know that finite subsets of the positive integers are enumerable.
   List them as $Y_1,Y_2, \ldots$ and put their respective complements $Y_{-1}, Y_{-2}$ in between: $Y_1, Y_{-1}, Y_2, Y_{-2}, \ldots$.
-  Clearly, every finite or cofinite subset occurs in this sequence, whence $Y$ is denumerable.
-
-  Since $X$ and $Y$ are both denumerable, they are both equinumerous with the positive integers by an earlier exercise, and thus equinumerous with each other.
+  Clearly, every finite or cofinite subset occurs in this sequence, whence $Y$ is denumerable, so $X$ must be denumerable also.
 \end{proof}
 
 \begin{exercise}[1.6]
@@ -142,9 +176,9 @@ Given the English alphabet, the string ``CAB'' -- $(3,1,2)$ -- can be coded by $
     a_1, a_2, a_3, a_4, \ldots
   \end{equation*}
   We can enumerate the finite subsets of $A$ as follows: first write down the empty set, then write down the subsets such that the indices of their elements $a_1, \ldots, a_k$ add up to $1$ ($1 + \ldots + k = 1$), then the subsets with indices adding up to $2$, and so on:
-  \begin{equation}
+  \begin{equation*}
     \emptyset, \{a_1\}, \{a_2\}, \{a_1, a_2\}, \{a_3\}, \ldots
-  \end{equation}
+  \end{equation*}
   Clearly, each finite set $A' \subset A$ occurs in this sequence: it consists of finitely many elements $a_k$ whose finite indices add up to some finite $n$.
 \end{proof}
 
@@ -160,6 +194,9 @@ Given the English alphabet, the string ``CAB'' -- $(3,1,2)$ -- can be coded by $
 \begin{summary}
   \begin{itemize}
     \item A subset of positive integers contains a smallest element (well-ordering principle);
+    \item A set is enumerable if it is the image of some total or partial function $f$ of positive integers (and can be listed as a list with a first entry $f(1)$, second entry $f(2)$, etc).
+    To say that a set is not enumerable is to deny the existence of such a function;
+    \item Two sets are equinumerous if there is a total bijection between them. Equinumerosity is reflexive, transitive, and symmetric;
     \item Examples of enumerable sets: positive integers, the set of $k$-tuples of positive integers for any fixed $k$, rational numbers, the set of finite sequences of positive integers, the set of finite strings from a finite or enumerable alphabet of symbols, the set of finite subsets of an enumerable set, any subset of an enumerable set, and the union of an enumerable family of enumerable sets;
     \item To show that a set is enumerable, list its elements in a sequence that doesn't get ``stuck'' when listing an infinite block of elements.
     This is the main idea behind Cantor's method of enumerating all pairs of positive integers: Each row or column doesn't terminate, but each diagonal does, and so each diagonal is a finite block, and we can list all the diagonals in succession.
@@ -168,8 +205,6 @@ Given the English alphabet, the string ``CAB'' -- $(3,1,2)$ -- can be coded by $
     Alternatively, demonstrate a correspondence between the set and another set known to be enumerable and/or use the powerful result that the \textbf{union of an enumerable family of sets is enumerable}.
     In particular, the naturals are enumerable because they are the union of positive integers and an enumerable set given by the correspondence $x \mapsto -(x+1)$ from positive integers.
     The positive rationals are also enumerable: each set $\left\{\frac{m}{n} : m \in P\right\}$ is enumerable by $m \mapsto \frac{m}{n}$, and the rationals are the enumerable union $\cup_{n=1}^\infty \left\{\frac{m}{n} : m \in P\right\}$.
-
-    \item Equinumerosity is reflexive, transitive, and symmetric;
     \item An enumerable set is either finite or equinumerous with the positive integers.
   \end{itemize}
 \end{summary}

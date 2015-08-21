@@ -1,7 +1,180 @@
 \section{Diagonalization} % (fold)
 \label{sec:diagonalization}
+\begin{theorem}[Cantor]
+  The set of all sets of positive integers is not enumerable.
+\end{theorem}
+\begin{proof}
+  Let $L = S_1, S_2, S_3, \ldots$ be an arbitrary list of sets of positive integers.
+  Let $S'$ be a set of positive integers such that for each $n$, $n \in S'$ if and only if $n \not\in S_n$.
+
+  Suppose there exists some $m$ such that $S' = S_m$, that is, $S'$ is on the list $L$ for some $m$.
+  Then, by the construction of $S'$, $m \in S_m$ if and only if $m \not\in S_m$, absurd; whence there exists no such $m$, and $S'$ is not on the list.
+
+  Since $L$ was arbitrary, this method works for any list $L$, in particular, the list $L$ of all sets of positive integers.
+  Then no list enumerates the power set of positive integers; this completes the proof.
+\end{proof}
+
+\begin{theorem}
+  The set of real numbers is not enumerable.
+\end{theorem}
+\begin{proof}
+  Suppose there exists an enumeration $f\colon \mathbb N \to \mathbb R$.
+  Then for each $x \in \mathbb R$ there exists an $n \in \mathbb N$ such that $f(n) = x$, as $f$ is surjective.
+  Let $d_{n,0}$ be the digit before the decimal point of $f(n)$, and $d_{n,i}$ the $i$th digit of the decimal expansion of $f(n)$.
+  For all $i$, let $e_i$ be a digit different from $d_{i,i}$.
+  Now construct a real number $r$ whose decimal expansion is $e_0.e_1e_2\ldots$.
+  For each $n \in \mathbb N$, we have $e_n \ne d_{n,n}$, and so $r \ne f(n)$.
+  Then $r$ is a real number not in the image of $f$, whence $f$ isn't surjective.
+\end{proof}
 
 \begin{exercise}[2.1]
-  % Exercise statement.
+  The set of all subsets of an infinite enumerable set $A$ is nonenumerable.
 \end{exercise}
+\begin{proof}
+  By an earlier exercise, there exists a correspondence $f\colon P \to A$.
+  Then there is a correspondence $h\colon \mathcal P(A) \to \mathcal P(P)$ given by $\{a_i, a_j, \ldots\} \mapsto \{i, j, \ldots\}$.
+  But by Cantor's theorem the power set of positive integers is nonenumerable, whence the power set of $A$ is nonenumerable also.
+\end{proof}
+\begin{proof}
+  Suppose the power set of $A$ is enumerable.
+  Then there exists a list $A_1,A_2,\ldots$ of subsets of $A$.
+  Since each subset of an enumerable set is enumerable, we can write each subset $A_j$ of $A$ as a list $a_{j,1},a_{j,2},a_{j,3},\ldots$.
+  Let $B$ be a subset such that for each $i$, $b_i \in B$ is different from $a_{i,i} \in A_i$.
+  By the assumption, $B = A_n$ for some $n$.
+  Examine the element $b_n$.
+  By the construction, $b_n \ne a_{n,n} = b_n$, absurd; and it follows that the power set of $A$ is nonenumerable.
+\end{proof}
+
+\begin{exercise}[2.2]
+  If for some or all of the finite strings from a given finite or enumerable alphabet we associate to the string a total or partial function from positive integers to positive integers, then there is some total function on positive integers taking only the values $1$ and $2$ that is not associated with any string.
+\end{exercise}
+\begin{proof}
+  Without loss of generality, let $\mathcal A$ be an enumerable alphabet of symbols $A^1, A^2, A^3, \ldots$.
+  By an earlier result, the set $S_{\mathcal A}$ of all finite strings is enumerable, so we can list them as follows: $S_1, S_2, \ldots, S_j, \ldots$, where $S_j = A_j^aA_j^bA_j^c\cdots$.
+  Each $S_j$ is then associated with a function $f_j$; that is to say, a list of values $f_j(i)$, $i = 1, 2, \ldots$, if such values exist.
+  Define then a function $f$ as follows:
+
+  \begin{equation*}
+    f(n) = \begin{cases}
+      1 &\text{ if } f_n(n) = 2 \\
+      2 &\text{ if } f_n(n) \ne 2 \text{ or } f_n(n) \text{ is undefined }
+    \end{cases}
+  \end{equation*}
+
+  Clearly this function is total on the set of positive integers and is not associated with any finite string: Suppose to the contrary that $f$ is associated with the string $S_m$.
+  Then $f(m) = f_m(m)$, absurd by the construction of $f$.
+  This completes the proof.
+\end{proof}
+
+\begin{exercise}[2.3]
+  The set of real numbers (or, equivalently, the set of points on the real number line) is equinumerous with the set of points on the semicircle indicated in Figure 2-3.
+\end{exercise}
+\begin{proof}
+  Draw a line from the center of the semicircle going through the semirciele to the real number line and vary the line's angle.
+  As it sweeps the points on the semicircle, it sweeps the points on the real-number line also.
+  Clearly this is a one-to-one mapping between the points on the semicircle and the points on the real-number line.
+  Further, all points on the semicircle have an image on the real-number line, whence the mapping is surjective and the result follows.
+\end{proof}
+
+\begin{exercise}[2.4]
+  The set of real numbers $\xi$ with $0 < \xi < 1$ is equinumerous with the set of points on the semicircle.
+\end{exercise}
+\begin{proof}
+  A one-to-one correspondence is given by $(x,y) \mapsto x$.
+\end{proof}
+
+\begin{exercise}[2.5]
+  The set of real numbers $\xi$ with $0 < \xi < 1$ is equinumerous with the set of all real numbers.
+\end{exercise}
+\begin{proof}
+  By the previous two exercises, the result is obvious.
+  However, an analytic correspondence between $(0,1)$ and $(-\pi/2, \pi/2)$ is given by $x \mapsto \pi(x - 1/2)$ and an analytic correspondence between $(-\pi/2, \pi/2)$ and $\mathbb R$ is given by $x \mapsto \tan x$.
+  Then $f(x) = \tan \pi(x - 1/2)$ is the desired bijection.
+\end{proof}
+
+\begin{exercise}[2.6]
+  A real number is called algebraic if and only if it is a solution to some equation of the form
+  \begin{equation*}
+    c_dx^d + c_{d-1}x^{d-1} + \ldots + c_2x^2 + c_1x + c_0 = 0
+  \end{equation*}
+  where $c_i$ are rational numbers and $c_d \ne 0$.
+
+  Every algebraic number can be described by a finite string of symbols from an ordinary keyboard.
+  Transcendental (non-algebraic) numbers exist.
+\end{exercise}
+\begin{proof}
+  For the first part, clear the denominators of the coefficients by multiplying the whole equation by each of them, this turns the equation into an equivalent one with integer coefficients $a_0, a_1, a_2, \ldots, a_d$.
+  Then consider a bijection between the roots of the equations and $d+2$-tuples of the form $(k, a_0, \ldots, a_d)$, where $k$ is the ordinal number of the root of the equation when roots are ordered by their value.
+  These tuples are denumerable and the set of finite strings from a finite alphabet is denumerable by an earlier result, whence the set of these tuples is equinumerous with the set of such finite strings; and the result follows.
+  Alternatively, assign to each root a finite string taken from the alphabet
+  \begin{equation*}
+    \text{, 0 1 2 3 4 5 6 7 8 9 -}
+  \end{equation*}
+  e.g. ``1,2,0,-1'' represents the first root of the equation $2x^2-1 = 0$.
+
+  For the second part, observe that there is an enumerable infinity of algebraic numbers, but the real numbers are nonenumerable, whence there must exist real numbers that are not algebraic.
+\end{proof}
+
+\begin{exercise}[2.7]
+  The set of real numbers $0 < \xi < 1$ and $\xi$ not a rational number with denominator a power of two is equinumerous with the set of those sets of positive integers that are neither finite nor cofinite.
+\end{exercise}
+\begin{proof}
+  Each such real number $\xi$ has a non-terminating binary expansion $\xi = 0.x_1x_2\ldots$.
+  For each such expansion, pick a subset $S$ of the positive integers by letting $n \in S$ if and only if $x_n = 1$.
+  Clearly this defines a bijection between the two sets, and the result follows.
+\end{proof}
+
+\begin{exercise}[2.8]
+  If $A$ is equinumerous with $C$ and $B$ is equinumerous with $D$, and the intersections $A \cap B$ and $C \cap D$ are empty, then the unions $A \cup B$ and $C \cup D$ are equinumerous.
+\end{exercise}
+\begin{proof}
+  Let $f\colon A \to C$ and $g\colon B \to D$ be total bijections.
+  Define a function $h\colon A \cup D \to B \cup D$ as follows:
+  \begin{equation*}
+    h(x) = \begin{cases}
+      f(x), &\text{ if }x \in A\\
+      g(x), &\text{ if }x \in B\\
+    \end{cases}
+  \end{equation*}
+  Since those two cases are exhaustive and mutually exclusive (the intersections are empty), $h$ is well-defined and is a total bijection.
+\end{proof}
+
+\begin{exercise}[2.9]
+  The set of real numbers $0 < \xi < 1$ is equinumerous with the set of all sets of positive integers.
+\end{exercise}
+\begin{proof}
+  The result trivially follows from Exercises 1.5, 2.7, and 2.8.
+\end{proof}
+
+\begin{exercise}[2.10]
+  The following sets are equinumerous: The set $A$ of all pairs of sets of positive integers, the set $B$ of all sets of pairs of positive integers, the set $C$ of all sets of positive integers.
+\end{exercise}
+\begin{proof}
+  By an earlier result, pairs of positive integers are equinumerous with positive integers, so there is a bijection $g$ from positive integers to pairs of positive integers, and its inverse $g^{-1}$.
+  Consider then a function $f$ that takes a set $\{i,j,\ldots\}$ of positive integers and associates with it the set $\{g(i), g(j), \ldots\}$ of pairs of positive integers.
+  Clearly this function is a total bijection from $C$ to $B$.
+
+  Now consider a map that takes a pair $(X,Y)$ of sets of positive integers to a set of pairs $(x,y)$ for all $x \in X$ and $y \in Y$.
+  This map is clearly total, surjective, and injective; this completes the proof.
+\end{proof}
+
+\begin{exercise}[2.11]
+\end{exercise}
+
+\begin{exercise}[2.12]
+\end{exercise}
+
+\begin{exercise}[2.13]
+\end{exercise}
+
+\begin{summary}
+  \begin{itemize}
+    \item This chapter's exercises were mainly a continuation of the previous chapter and its exercises, but here the diagonalization method of proof is introduced.
+    If you need to show that a set of objects can never be complete, try it.
+    Binary and decimal expansions are very relevant;
+    \item $A\cup B$ and $C\cup D$ are equinumerous if $A\cap B = C\cap D = \emptyset$, $A$ is equinumerous with $C$, and $B$ is equinumerous with $D$;
+    \item Enumerable sets: Algebraic numbers;
+    \item Nonenumerable sets, all equinumerous: Real numbers, any open or closed nondegenerate interval of real numbers, set of points in a plane, set of points in a space, set of all sets of positive integers, set of all pairs of sets of positive integers, set of all sets of pairs of positive integers.
+  \end{itemize}
+\end{summary}
 % section diagonalization (end)

@@ -6,10 +6,13 @@
 \usepackage{amsmath}
 \usepackage{calc}
 \usepackage{hyperref}
+\usepackage{color}
 
 \theoremstyle{definition}
 \newtheorem{exercise}{Exercise}
 \newtheorem{example}{Example}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
 
 \theoremstyle{remark}
 \newtheorem*{remark}{Remark}
@@ -27,11 +30,18 @@
     \kern.07em
   }%
 }
-\newcommand\inv{^{-1}}
 \newcommand\id{\operatorname{id}}
+\newcommand\myline{\noindent\makebox[\linewidth]{\rule{\textwidth}{0.4pt}}\break}
+\newcommand\tk{{\color{red}\textbf{TK$\implies$}}}
 
 
 \begin{document}
+Note: The textbook is extremely unrigorous and proceeds mainly by way of handwavey, intuitive arguments.
+The style of the ``solutions'' is the same.
+Garbage in, garbage out.
+
 \include{ch1}
 \include{ch2}
+\include{ch3}
+
 \end{document}
