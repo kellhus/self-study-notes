@@ -1,4 +1,41 @@
 \section{Turing Computability} % (fold)
 \label{sec:turing_computability}
+A function $f\colon P^k \to P$, $m_1,\ldots,m_k \mapsto n$ is Turing computable if there is a Turing machine computing it that satisfies the following four conditions:
 
+\textbf{(1) }The arguments $m_1,\ldots,m_k$ are in monadic (tally) notation, each argument separated from the others by a single blank.
+
+\textbf{(2) }Standard initial configuration: the machine is scanning the leftmost $1$ on the tape;
+
+\textbf{(3) }Standard final configuration: the machine halts scanning the leftmost $1$ on the tape containing a block of $n$ strokes, and otherwise blank;
+
+\textbf{(4) }If the function is undefined for the arguments, the machine either never halts or halts in a nonstandard configuration.
+
+Do the first two exercises to remember the notation, if the need later arises.
+The rest of the exercises are far too annoying and seemingly mathematically pointless.
+
+\begin{exercise}[3.1]
+  Solutions:
+
+  a) $q_1S_1Rq_2, q_1S_0Rq_2$.
+
+  b) $q_1S_1Rq_1, q_1S_0Rq_2$; $q_2S_1Rq_2, q_2S_0Rq_3$.
+\end{exercise}
+
+\begin{exercise}[3.2]
+  Solutions:
+
+  a) $q_1S_1Rq_1, q_1S_0Rq_2$; $q_2S_1Rq_2, q_2S_0Lq_3$.
+
+  b) $q_1S_1Rq_1, q_1S_0Rq_2$; $q_2S_1Rq_2, q_2S_0Rq_3$; $q_3S_1Rq_3, q_3S_0Lq_4$.
+\end{exercise}
+
+\begin{summary}
+  \begin{itemize}
+    \item A function $f$ from positive integers to positive integers is effectively computable if a list of instructions exists to compute $f(n)$ for any $n$;
+    \item A numerical function is Turing computable if a Turing machine computing it exists;
+    \item All Turing computable functions are effectively computable.
+    \textbf{Turing's thesis} is that any effectively computable function is Turing computable;
+    \item Examples of Turing machines in this chapter and its exercises include machines that: write a specified number of strokes, double the number of strokes, determine the parity of the length of a block of strokes, add two blocks of strokes, multiply two blocks of strokes, compute the minimum function, compute the maximum function.
+  \end{itemize}
+\end{summary}
 % section turing_computability (end)

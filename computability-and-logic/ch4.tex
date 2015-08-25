@@ -1,0 +1,133 @@
+\section{Uncomputability} % (fold)
+\label{sec:uncomputability}
+By Exercise 9 (2.2), the set of functions from positive integers to positive integers is nonenumerable, while the set of finite strings (in particular, strings representing Turing machines and therefore Turing-computable functions) is enumerable.
+Then there must exist functions that aren't Turing-computable.
+
+Take this Turing machine:
+\begin{equation*}
+  q_1S_0Rq_3, q_1S_1S_0q_2, q_2S_0Rq_1, q_3S_0S_1q_4, q_3S_1S_0q_2
+\end{equation*}
+To set some machinery up, modify the quadruple representation as follows: For each $S_j$, ensure there is a quadruple beginning with $q_iS_j$:
+\begin{equation*}
+  q_1S_0Rq_3, q_1S_1S_0q_2, q_2S_0Rq_1, q_2S_1S_1q4, q_3S_0S_1q_4, q_3S_1S_0q_2
+\end{equation*}
+But this makes the $q_iS_j$s unnecessary, and we can leave the last two symbols (the instruction and the next state), obtaining:
+\begin{equation*}
+  Rq_3, S_0q_2, Rq_1, S_1q_4, S_1q_4, S_0q_2
+\end{equation*}
+Now map $q_i \mapsto i$, $S_j \mapsto j+1$ (to avoid zero), $L \mapsto 3$, $R \mapsto 4$ and obtain:
+\begin{equation*}
+  4, 3, 1, 2, 4, 1, 2, 4, 2, 4, 1, 2
+\end{equation*}
+Then this Turing machine is represented by a finite sequence of positive integers or even one positive integer using prime decomposition.
+
+\begin{theorem}
+  The halting function $h$ is not Turing computable, where $h(m,n) = 1$ if the Turing machine $m$ halts starting with input $n$, and $2$ otherwise.
+\end{theorem}
+\begin{proofidea}
+  Assume a machine $H$ computing $h$ exists, and construct an absurd machine $M$ that halts when it doesn't halt.
+\end{proofidea}
+\begin{proof}
+  First we need two machines: the copying machine $C$ with states $1,\ldots,p$ that duplicates a block of $n$ strokes on an otherwise blank tape, and the dithering machine $D = 1,3,4,2,3,1,3,3$ that halts on a block of $n$ strokes on an otherwise blank tape if $n > 1$, but never halts if $n=1$.
+
+  Now suppose machine $H$ with states $1,\ldots,q$ computes $h$.
+  Combine $C$ and $H$ by renumbering the states of $H$ as $p + 1, \ldots, p + q$ and appending those renumbered instructions after the instructions of $C$.
+  This means $C$ used to halt at $p+1$, but now $H$ is executed instead; giving us a machine $G$ with states $1,\ldots,r$ (where $r=p+q$) that computes $g(n)=h(n,n)$.
+
+  Now combine $G$ and $D$ into a machine $M$: renumber $D$'s states $r+1,r+2$ and write these instructions after those of $G$.
+  Then
+  \begin{equation*}
+    M(n) \begin{cases}
+      \text{halts} &\text{ if }h(n,n)=2\text{, i.e. machine $n$ doesn't halt on $n$}\\
+      \text{doesn't halt} &\text{ if }h(n,n)=1\text{, i.e. machine $n$ halts on $n$}
+    \end{cases}
+  \end{equation*}
+  Now run $M$ on its own number $m$.
+  We have that $M(m)$ halts if $M(m)$ doesn't halt, absurd.
+  This completes the proof.
+\end{proof}
+
+Define the score of a $k$-state Turing machine $M_k$ as follows:
+\begin{equation*}
+  \text{score of $M_k$} = \begin{cases}
+    0, &\text{ if $M_k$(k) never halts or halts in a nonstandard position}\\
+    n, &\text{ if $M_k(k)$ halts with output $n$}
+  \end{cases}
+\end{equation*}
+Now define the scoring function
+\begin{equation*}
+  s(k) = \max\limits_k \left(\text{score of $M_k$}\right)
+\end{equation*}
+That is, $s(k)$ is the highest score achieved by any $k$-state Turing machine $M_k$, for all $k$.
+
+\begin{theorem}
+  The scoring function $s$ is not Turing computable.
+\end{theorem}
+\begin{proof}
+  Suppose $s$ is Turing computable (there exists a machine $M_s$ computing it).
+  Then so is the function $t$, given by $t(k) = s(k) + 1$.
+  Indeed, modify $M_s$ to move left, print a stroke and halt instead of halting.
+  But no Turing machine can compute $t$: Let $M_t$ be such a machine and $k$ its number of states.
+  Then $M_t(k) = t(k) = s(k) + 1 > s(k)$, absurd.
+\end{proof}
+
+Busy beaver: a Turing machine starts with a blank tape.
+If the machine halts in a standard configuration scanning an $n$-block of $S_1$s on an otherwise blank tape, its productivity is $n$, otherwise $0$.
+Now define
+\begin{equation*}
+  p(n) = \max \left(\text{productivity of any Turing machine with at most $n$ states}\right)
+\end{equation*}
+This busy-beaver function is also Turing uncomputable.
+The following are facts about $p$: $p(1) = 1$, $p(n+1)>p(n)$ for all $n$, there is an $i$ such that $p(n+i) \ge 2p(n)$ for all $n$.
+
+\begin{exercise}[4.1]
+  Solution: Alternate rightwards and leftwards from the starting point in steps of increasing length, putting a marker if the destination is blank or halting if finding something that is not the marker.
+  If the tape is not completely blank, there has to be a $1$ within a finite length of the initial position.
+\end{exercise}
+
+\begin{exercise}[4.2]
+  Solution: No such Turing machine exists.
+  The tape is infinite in both directions, so no matter how many steps we take in some direction, we can still take that many plus one steps; and we \emph{still} won't know if the tape is completely blank or not, so we can never halt.
+\end{exercise}
+
+\begin{exercise}[4.3]
+  Copying machine $C$ solution:
+  \begin{align*}
+    q_1S_0Lq_7,&~~q_1S_1S_0q_2&\text{(go parking if blank or put a marker if not)}\\
+    q_2S_0Rq_3,&~~q_2S_1Rq_1&\text{(helper routines)}\\
+    q_3S_0Rq_4,&~~q_3S_1Rq_3&\text{(get to the end of the copy)}\\
+    q_4S_0S_1q_5,&~~q_4S_1Rq_4&\text{(get to the end of the copy and write a $1$)}\\
+    q_5S_0Lq_6,&~~q_5S_1Lq_5&\text{(go back to the marker)}\\
+    q_6S_0S_1q_2,&~~q_6S_1Lq_6&\text{(go back to the marker and overwrite it with $1$)}\\
+    q_7S_0Rq_8,&~~q_7S_1Lq_7&\text{(parking in the standard final position)}
+  \end{align*}
+  The idea is to put a blank marker at the start of the string of $1$s, then skip the $1$s until a blank occurs, skip the blank (and $1$s, if any) and write a $1$, move back to the marker, replace it with $1$, move right and put a marker again, and so on until the marker and the blank between the copied strings co-occur.
+  When that happens, park in the standard final configuration and we are done.
+\end{exercise}
+
+\begin{exercise}[4.4]
+  If a two-place function $g$ is Turing computable, then so is the function $f$ given by $f(n) = g(n,n)$.
+\end{exercise}
+\begin{proof}
+  The copying machine $C$ has states $1,\ldots,p$
+  Now let $G$ be the Turing machine that computes $g$ with states $1,\ldots,q$.
+  Renumber the states of $G$ as $p+1,\ldots,p+q$ and append them after the states of $C$.
+  This gives us a Turing machine that copies the input $n$ and applies the function $g$ to those inputs, which computes the function $f$ as desired.
+\end{proof}
+
+\begin{exercise}[4.5]
+  Let $U$ be a Turing machine (computing a two-place function $u$) such that for any other Turing machine $M_n$ (computing a one-place function $m_n$) and any $x$, we have that $u(n,x) = m_n(x)$.
+  This Turing machine $U$ is called a universal Turing machine (UTM).
+
+  If Turing's thesis is correct, then a UTM must exist.
+\end{exercise}
+\begin{proof}
+  \tk See \href{http://math.stackexchange.com/questions/1408692/}{http://math.stackexchange.com/questions/1408692/} and correct the ``solution'' when you get to recursive enumerability and fixed points to understand the answer therein properly.
+
+  The set of Turing machines is enumerable, then for any finite $n$ we can proceed to enumerate the machines as finite strings.
+  Once we get to the required $n$, we run the Turing machine $M_n$ on the argument $x$.
+  If $M_n$ halts in a standard position with some output, then we have found $u(n,x)$.
+  If $M_n$ does not halt or halts in a nonstandard position, then \emph{that} is the desired ``value'' ($u(n,x)$ is then undefined).
+  This is an informal list of instructions to compute $u(n,x)$, so $u$ is effectively computable, and so by Turing's thesis is also Turing-computable, whence $U$ must exist.
+\end{proof}
+% section uncomputability (end)
