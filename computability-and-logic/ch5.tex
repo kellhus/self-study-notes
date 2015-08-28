@@ -1,0 +1,34 @@
+\section{Abacus Computability} % (fold)
+\label{sec:abacus_computability}
+An abacus machine has registers $R_0, R_1, \ldots$.
+Register $n$ contains number $[n]$.
+
+A function $f$ of arguments $x_1,\ldots,x_r$ is abacus-computable given the following: \textbf{(1)} The first $r$ registers store the arguments $x_1 = [1],\ldots,x_r=[r]$ and other registers are empty $0=[r+1]=[r+2]=\ldots$; \textbf{(2)} When the computation halts, $f(x_1,\ldots,x_r)=[n]$; \textbf{(3)} If the computation never halts, $f(x_1,\ldots,x_r)$ is undefined.
+
+Every abacus-computable function is Turing-computable.
+A way to convert an abacus machine into an equivalent Turing machine is presented in \emph{C\&l}.
+
+We have three trivial functions:
+\begin{itemize}
+  \item Zero function $z$, $x \mapsto 0$;
+  \item Successor function $s$, $x \mapsto x+1$;
+  \item Identity function $\id^m_n$, $x_1,\ldots,x_n \mapsto x_m$ ($1 \le m \le n$).
+\end{itemize}
+
+Also we have three processes for defining new functions:
+\begin{itemize}
+  \item Composition (also called substitution), e.g.:
+  \begin{equation*}
+    h(x_1,x_2,x_3) = f(g_1(x_1,x_2,x_3), g_2(x_1,x_2,x_3))
+  \end{equation*}
+  \item (Primitive) recursion, e.g.:
+  \begin{gather*}
+    h(x,0) = f(x)\\
+    h(x,y+1) = g(x,y,h(x,y))
+  \end{gather*}
+  \item Minimization, e.g.: We have a two-argument function $f$, then we define a one-argument function $h$: If $f(x,0),\ldots,f(x,i-1)$ are all defined and nonzero, and $f(x,i)$ is zero, then $h(x)=i$.
+\end{itemize}
+
+Functions obtained from the trivial functions by applying these processes are called recursive.
+All recursive functions are abacus-computable, and hence Turing-computable.
+% section abacus_computability (end)

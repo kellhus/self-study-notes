@@ -78,7 +78,7 @@ Now define
   p(n) = \max \left(\text{productivity of any Turing machine with at most $n$ states}\right)
 \end{equation*}
 This busy-beaver function is also Turing uncomputable.
-The following are facts about $p$: $p(1) = 1$, $p(n+1)>p(n)$ for all $n$, there is an $i$ such that $p(n+i) \ge 2p(n)$ for all $n$.
+The following are facts about $p$: $p(1) = 1$, $p(n+1)>p(n)$ for all $n$, there is an $i$ such that $p(n+i) \ge p(n)$ for all $n$.
 
 \begin{exercise}[4.1]
   Solution: Alternate rightwards and leftwards from the starting point in steps of increasing length, putting a marker if the destination is blank or halting if finding something that is not the marker.
