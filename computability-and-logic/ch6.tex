@@ -1,4 +1,353 @@
 \section{Recursive Functions} % (fold)
 \label{sec:recursive_functions}
+The zero, successor, and various identity functions (also called projection functions) are together the \emph{basic} functions:
 
+Zero function: $z(0) = 0$, $z(0') = 0$, $z(0'')=0, \ldots$.
+
+Successor function: $s(0) = 0'$, $s(0') = 0''$, $s(0'')=0''', \ldots$.
+
+Identity functions: $\id_i^n(x_1,\ldots,x_i,\ldots,x_n) = x_i$.
+\newline
+If $f$ is a function of $m$ arguments and each of $g_1,\ldots,g_m$ is a function of $n$ arguments, then the function $h$ obtained by composition (also called substitution) is:
+\begin{gather*}
+  \boxed{h(x_1, \ldots, x_n) = f(g_1(x_1, \ldots, x_n), \ldots, g_m(x_1, \ldots, x_n))}\\
+  \text{Shorthand:}\\
+  \boxed{h = \Cn[f,g_1,\ldots,g_m]}
+\end{gather*}
+
+We can also obtain new functions by (primitive) recursion:
+\begin{gather*}
+  \boxed{h(x, 0) = f(x),~~~h(x, s(y)) = g(x, y, h(x, y))}\\
+  \text{Shorthand:}\\
+  \boxed{h=\Pr[f,g]}
+\end{gather*}
+
+Functions obtained from the basic functions by composition and recursion are called primitive recursive.
+
+Minimization is another way to define new functions (which will not be necessarily primitive recursive).
+Given a function $f$ of $n + 1$ arguments, minimization yields a total or partial function $h$ of $n$ arguments as follows:
+\begin{align*}
+  \Mn[f](x_1, \ldots, x_n) = \begin{cases}
+    x_{n+1}, &\text{if $f(x_1,\ldots,x_{n+1}) = 0$ and for all $y < x_{n+1}$}\\
+    &\text{$f(x_1,\ldots,x_n,y) \ne 0$ and is defined}\\
+    \text{undefined} &\text{otherwise}
+  \end{cases}
+\end{align*}
+If $f$ is a total function, then the above definition simplifies to: $\Mn[f](x_1, \ldots, x_n)$ is the smallest $x_{n+1}$ for which $f(x_1,\ldots,x_{n+1}) = 0$, if such an $x_{n+1}$ exists, and undefined otherwise.
+
+The total function $f$ is called regular if for every $x_1,\ldots,x_n$ there is an $x_{n+1}$ such that $f(x_1,\ldots,x_{n+1}) = 0$.
+If $f$ is total, then $\Mn[f]$ is total if and only if $f$ is regular.
+
+Functions obtained from the basic functions by $\Cn$, $\Pr$ and $\Mn$ are called the recursive (total or partial) functions.
+Recursive functions are effectively computable.
+Church's thesis is that effectively computable total functions are all recursive.
+
+\begin{example}
+  \newcommand{\rsum}{\operatorname{sum}}
+  \newcommand{\rprod}{\operatorname{prod}}
+  The sum and product functions are primitive recursive.
+  Indeed, we have the following recursion equations for the sum function:
+  \begin{gather*}
+    \rsum(x,0)=x=\id_1^1(x)\\
+    \rsum(x,y')=\rsum(x,y)'=\Cn[s, \id_3^3](x, y, \rsum(x,y))
+  \end{gather*}
+  Formally, $\rsum=\Pr[\id_1^1,\Cn[s, \id_3^3]]$. And for the product:
+  \begin{gather*}
+    \rprod(x,0)=z(x)\\
+    \rprod(x,y')=x+\rprod(x,y)
+  \end{gather*}
+  Formally, $\rprod=\Pr[z,\Cn[\rsum,\id_1^3,\id_3^3]]$.
+\end{example}
+
+\begin{exercise}
+  \begin{equation*}
+    \operatorname{fac} = \Cn[\Pr[\operatorname{const}_1, \Cn[\operatorname{prod}, \id_3^3, \Cn[s, \id_2^3]]], \id, \id]
+  \end{equation*}
+\end{exercise}
+\begin{proof}
+  \begin{align*}
+    \operatorname{fac}(x) &= \Cn[\Pr[\operatorname{const}_1, \Cn[\operatorname{prod}, \id_3^3, \Cn[s, \id_2^3]]], \id, \id](x, x) \\
+    &= \Pr[\operatorname{const}_1, \Cn[\operatorname{prod}, \id_3^3, \Cn[s, \id_2^3]]](\id(x), \id(x)) \\
+    &= \Pr[\operatorname{const}_1, \Cn[\operatorname{prod}, \id_3^3, \Cn[s, \id_2^3]]](x, x) \\
+    &= \begin{cases}
+      \operatorname{const}_1(x) = 0! = 1, &\text{ if }x=0\\
+      x!\cdot x', &\text{otherwise}
+    \end{cases}
+  \end{align*}
+  Since, denoting $\Pr[\operatorname{const}_1, \Cn[\operatorname{prod}, \id_3^3, \Cn[s, \id_2^3]]]$ as $\operatorname{dummyfac}$,
+  \begin{align*}
+    &\Cn[\operatorname{prod}, \id_3^3, \Cn[s, \id_2^3]](x, x, \operatorname{dummyfac}(x,x)) =\\
+    &\operatorname{prod}(\id_3^3(x,x,\operatorname{dummyfac}(x,x)), \Cn[s, \id_2^3](x,x,\operatorname{dummyfac}(x,x))) =\\
+    &\operatorname{dummyfac}(x,x) \cdot s(x)
+  \end{align*}
+\end{proof}
+
+\begin{exercise}
+  Let $f$ be a primitive recursive function.
+  Then the functions
+  \begin{gather*}
+    g(x,y)=f(x,0)+f(x,1)+\ldots+f(x,y)=\sum_{i=0}^y f(x,i)\\
+    h(x,y)=f(x,0)\cdot f(x,1)\cdot\ldots\cdot f(x,y)=\prod_{i=0}^y f(x,i)
+  \end{gather*}
+  are primitive recursive.
+\end{exercise}
+\begin{proof}
+  We have for $g$ the recursion equations
+  \begin{gather*}
+    g(x,0)=f(x,0)\\
+    g(x,y')=g(x,y)+f(x,y')
+  \end{gather*}
+  Formally,
+  \begin{equation*}
+    g = \Pr[\Cn[f, \id, z], \Cn[\operatorname{sum}, \id_3^3, \Cn[f, \id_1^3, \Cn[s, \id_2^3]]]]
+  \end{equation*}
+  Indeed,
+  \begin{align*}
+    g(x,y) = \begin{cases}
+      \Cn[f, \id, z](x) = f(x, z(x)) = f(x, 0) &\text{ if }y = 0\\
+      \begin{aligned}
+        &\Cn[\operatorname{sum}, \id_3^3, \Cn[f, \id_1^3, \Cn[s, \id_2^3]]](x, y, g(x, y))=\\
+        &\operatorname{sum}(g(x, y), \Cn[f, \id_1^3, \Cn[s, \id_2^3]](x, y, g(x, y)))=\\
+        &\operatorname{sum}(g(x, y), f(x, \Cn[s,\id_2^3](x, y, g(x, y))))=\\
+        &\operatorname{sum}(g(x, y), f(x, s(y)))=\\
+        &g(x, y) + f(x, y')
+      \end{aligned} &\text{otherwise}
+    \end{cases}
+  \end{align*}
+  The case for $h$ is similar, except $\operatorname{sum}$ is replaced by $\operatorname{prod}$.
+\end{proof}
+
+\begin{exercise}
+  The exponential or power function $f(x,y) = x \uparrow y$ is primitive recursive.
+\end{exercise}
+\begin{proof}
+  We have the recursion equations:
+  \begin{gather*}
+    f(x,0) = x \uparrow 0 = 1\\
+    f(x,y') = x \cdot (x \uparrow y)
+  \end{gather*}
+  Or, more formally,
+  \begin{equation*}
+    \operatorname{exp} = \Pr[\Cn[s, z], \Cn[\operatorname{prod}, \id_1^3, \id_3^3]]
+  \end{equation*}
+  Indeed,
+  \begin{equation*}
+    f(x, 0) = \Cn[s, z](x, 0) = s(z) = 1
+  \end{equation*}
+  \begin{align*}
+    f(x, y') &= \Cn[\operatorname{prod}, \id_1^3, \id_3^3](x, y, f(x, y))\\
+    &= \operatorname{prod}(x, f(x, y)) \\
+    &= x \cdot f(x, y)
+  \end{align*}
+\end{proof}
+
+\begin{exercise}
+  \newcommand{\pred}{\operatorname{pred}}
+  Define $\pred(x)$ to be the predecessor $x-1$ of $x$ for $x > 0$, and let $\pred(0) = 0$ by convention.
+  Then $\pred$ is primitive recursive.
+  \begin{proof}
+    Define $\pred(x) = f(x, x)$.
+    We have the recursion equations:
+    \begin{gather*}
+      f(x, 0) = 0\\
+      f(x, y') = y
+    \end{gather*}
+    Formally, $\pred = f = \Pr[z, \id_2^3]$.
+    Indeed, $\pred(0) = f(0, 0) = z(0) = 0$ and $\pred(x') = f(x', x') = \id_2^3(x', x, f(x, y)) = x$.
+  \end{proof}
+\end{exercise}
+
+\begin{exercise}
+  \newcommand{\pred}{\operatorname{pred}}
+  Define the modified difference function $m(x, y) = x - y$ if $x \ge y$, and let $m(x, y) = 0$ by convention otherwise.
+  Then the function $m$ is primitive recursive.
+  \begin{proof}
+    We have the recursion equations:
+    \begin{gather*}
+      m(x, 0) = x\\
+      m(x, y') = \pred(m(x,y))
+    \end{gather*}
+    If $x < y$, $\pred$ will reach zero, and the convention will be satisfied.
+    Formally, $m = \Pr[\id, \Cn[\pred, \id_3^3]]$
+  \end{proof}
+\end{exercise}
+
+\begin{exercise}
+  \newcommand{\sg}{\operatorname{sg}}
+  \newcommand{\sgb}{\overline{\operatorname{sg}}}
+  Define $\sg(0) = 0$, and $\sg(x) = 1$ if $x > 0$; also define $\sgb(0) = 1$ and $\sgb(x)  = 0$ if $x > 0$.
+  Then $\sg$ and $\sgb$ are primitive recursive.
+  \begin{proof}
+    We can use the function $m$ from the previous exercise and put $\sg(x) = m(1, m(1, x))$.
+    Indeed,
+    \begin{align*}
+      &\sg(0) = m(1, m(1, 0)) = m(1, 1) = 0\\
+      &\sg(1) = m(1, m(1, 1)) = m(1, 0) = 1\\
+      &\sg(2) = m(1, m(1, 2)) = m(1, 0) = 1\\
+      &\ldots
+    \end{align*}
+    For the second function, put $\sgb(x) = m(1, x)$:
+    \begin{align*}
+      &\sg(0) = m(1, 0) = 1\\
+      &\sg(x) = m(1, 1) = 0\\
+      &\sg(x) = m(1, 2) = 0\\
+      &\ldots
+    \end{align*}
+  \end{proof}
+\end{exercise}
+
+\begin{exercise}[6.1]
+  Let $f$ be a two-argument recursive total function.
+  Then the following functions are also recursive: $g(x,y)=f(y,x)$, $h(x)=f(x,x)$, $k_{17}(x)=f(17,x)$ and $k^{17}(x)=f(x,17)$.
+\end{exercise}
+\begin{proof}
+  For the first function, put $g = \Cn[f, \id_2^2, \id_1^2]$.
+  For the second function, put $h = \Cn[f, \id, \id]$.
+  For the third function, put $k_{17} = \Cn[f, \operatorname{const}_{17}, \id]$.
+  The fourth function is then $k^{17} = \Cn[f, \id, \operatorname{const}_{17}]$.
+\end{proof}
+
+\begin{exercise}[6.2]
+  Let $J_0(a,b) = (a^2+2ab+b^2-b-3a+2)/2$ be the function coding pairs of positive integers by positive integers, and $J(a,b) = J_0(a+1,b+1)-1$ be the function coding pairs of natural numbers by natural numbers.
+  Then $J$ is primitive recursive.
+\end{exercise}
+\begin{proof}
+  \newcommand{\pred}{\operatorname{pred}}
+  \newcommand{\sgb}{\overline{\operatorname{sg}}}
+  \newcommand{\even}{\operatorname{even}}
+  \newcommand{\divtwo}{\operatorname{divtwo}}
+  \newcommand{\rsum}{\operatorname{sum}}
+  First we need to show that $J_0$ is primitive recursive.
+  We have $a^2+2ab+b^2 = b^2+(a+2a)a \ge b+3a$ for $a$ and $b$ positive integers, thus we can compose the modified difference function $m$, the power function, the sum function, and the product function to see that the numerator is primitive recursive.
+
+  For the division part, we only care about even integers, so let's construct a primitive recursive function that is equivalent to $f(x)=x/2$ for even integers only.
+  First define an auxiliary function $\even(x) = \sgb(h(x,x))$, where the recursion equations for $h$ are:
+  \begin{gather*}
+    h(x,0) = 0\\
+    h(x,y') = m(x,h(x,y))
+  \end{gather*}
+  Formally, $h = \Pr[z, \Cn[m,\id^3_1,\id^3_3]]$.
+  The $\even$ function so defined is primitive recursive and returns $1$ whenever $x$ is even, and $0$ otherwise.
+  Now define $\divtwo(x)=u(x,x)$.
+  We have the recursion equations:
+  \begin{gather*}
+    u(x,0) = 0 \\
+    u(x,y') = u(x,y)+\even(y)
+  \end{gather*}
+  This is the desired function.
+  Formally,
+  \begin{equation*}
+    \divtwo = \Cn[\Pr[z, \Cn[\rsum, \id^3_3, \Cn[\even, \id^3_2]]], \id, \id]
+  \end{equation*}
+  Indeed,
+  \begin{align*}
+    &\divtwo(2)=1\\
+    &\divtwo(4)=2\\
+    &\divtwo(6)=3\\
+    &\ldots
+  \end{align*}
+  Thus we have shown that $J_0$ is primitive recursive.
+  The function $J$ is obtained from $J_0$ by composition of known primitive recursive functions:
+  \begin{gather*}
+    c_1 = \Cn[\operatorname{const}_1, \id^2_1]\\
+    J(a,b) = \Cn[m, \Cn[J_0, \Cn[\rsum, \id^2_1, c_1], \Cn[\rsum, \id^2_2, c_1]], c_1](a,b)
+  \end{gather*}
+  and is thus primitive recursive; this completes the proof.
+\end{proof}
+
+\begin{exercise}[6.3]
+  The following functions are primitive recursive: the absolute difference $|x-y|$ (defined to be $x-y$ if $y<x$, and $y-x$ otherwise), the order characteristic $\chi_\le(x,y)$ (defined to be $1$ if $x\le y$ and $0$ otherwise), and the maximum $\max(x,y)$.
+\end{exercise}
+\begin{proof}
+  \newcommand{\rsum}{\operatorname{sum}}
+  \newcommand{\sg}{\operatorname{sg}}
+  For the absolute difference, note that $|x-y|=m(x,y)+m(y,x)$.
+  Or, more formally, $\Cn[\rsum, \Cn[m, \id^2_1, \id^2_2], \Cn[m, \id^2_2, \id^2_1]]$.
+  For the order characteristic, put $\chi_\le(x,y) = \sg(m(x+1,y))$.
+  For the maximum function, put $\max(x,y) = m(x,y)+y$:
+  \begin{enumerate}
+    \item $x<y \implies m(x,y)+y=x-y+y=x$
+    \item $x>y \implies m(x,y)+y=0+y=y$
+    \item $x=y \implies m(x,y)+y=0+y=y=x$
+  \end{enumerate}
+  Less elegantly, $\max(x,y) = \sg(m(x+1,y)) \cdot x + \sg(m(y,x)) \cdot y$.
+\end{proof}
+
+\begin{exercise}[6.4]
+  The following functions are primitive recursive: $c(x,y,z)=1$ if $yz=x$ and $0$ otherwise, $d(x,y,z)=1$ if $J(y,z)=x$ and $0$ otherwise.
+\end{exercise}
+\begin{proof}
+  \newcommand{\sgb}{\overline{\operatorname{sg}}}
+  Put $c(x,y,z) = \sgb(|y\cdot z - x|)$ and $d(x,y,z) = \sgb(|J(y,z) - x|)$.
+\end{proof}
+
+\begin{exercise}[6.5]
+  Define $K(n)$ and $L(n)$ to be the first and second entries of the pair of natural numbers coded by the number $n$ (under the coding $J$ from an earlier exercise), so that $J(K(n), L(n)) = n$.
+  The functions $K$ and $L$ are primitive recursive.
+\end{exercise}
+\begin{proof}
+  \newcommand{\sgb}{\overline{\operatorname{sg}}}
+  Observe that $J(x,y)\ge x$ and $J(x,y)\ge y$.
+  In other words, $n \ge K(n)$ and $n \ge L(n)$, which establishes useful bounds.
+  Further, with some fussing and similarly to an earlier exercise, we know that the functions
+  \begin{gather*}
+    g(n,x,y)=f(n,x,0)+f(n,x,1)+\ldots+f(n,x,y)=\sum_{i=0}^y f(n,x,i)\\
+    h(n,x,y)=g(n,0,y)+g(n,1,y)+\ldots+g(n,x,y)=\sum_{i=0}^x g(n,i,y)
+  \end{gather*}
+  are primitive recursive when $f$ is primitive recursive.
+
+  Now, we need a three-argument primitive recursive function that accepts $n$, $x$, $y$ and returns $0$ if $(x,y)$ isn't coded by $n$, and $x$ otherwise.
+  Similarly to an earlier exercise, we have just such a function: $f(n,x,y) = x \cdot \sgb(|J(x,y) - n|)$.
+  But plugging it into the first series gives as a function $h$ such that, applied to the arguments $h(n,n,n)$, it returns an $x$ that is the first entry of the pair coded by $n$.
+  Define now $K(n)=h(n,n,n)$, and we are done.
+
+  The argument for $L(n)$ is similar.
+\end{proof}
+
+\begin{exercise}[6.6]
+  Let $n=2^{k(n)}(2l(n)+1)\mathop{\dot -}1$ be a coding of pairs of natural numbers by natural numbers.
+  Then the functions $k$ and $l$ are primitive recursive.
+\end{exercise}
+\begin{proof}
+  The method used in the previous exercise works with trivial modifications.
+\end{proof}
+
+\begin{exercise}[6.7]
+  Solution: Every recursive function can be represented as a finite string using an enumerable alphabet that is the union of the following symbols:
+  \begin{equation*}
+    \Cn~~\Pr~~\Mn~~s~~z~~\id~~\_~~\hat{}~~[~~]
+  \end{equation*}
+  and numerals denoting natural numbers.
+  We know from an earlier result that such a set of finite strings is enumerable, and we can assign code numbers to them using the usual methods, e.g. prime decomposition.
+\end{exercise}
+
+\begin{exercise}[6.8]
+  Let $d(x)=1$ if the one-argument recursive function $f_x$ with code number $x$ is defined and $f_x(x)=0$, and $d(x)=0$ otherwise.
+  Then $d$ is not recursive.
+\end{exercise}
+\begin{proof}
+  Suppose towards a contradiction that $d$ is recursive.
+  Then it is in the list of enumerated recursive functions for some code number $n$: $d = f_n$.
+  Suppose $f_n(n)$ is defined and is zero, then by the construction $d(n)=1$, absurd.
+\end{proof}
+
+\begin{exercise}[6.9]
+  Let
+  \begin{equation*}
+    h(x,y) = \begin{cases}
+      1, &\text{if recursive $f_x(y)$ is defined}\\
+      0, &\text{otherwise}
+    \end{cases}
+  \end{equation*}
+  Then $h$ is not recursive.
+\end{exercise}
+\begin{proof}
+  \newcommand{\const}{\operatorname{const}}
+  There exists a recursive function $f_n$ such that $f(0)=0$ and undefined for nonzero arguments.
+  (Then $h(n,0)=1$ and $h(n,y)=0$ for $y\ne 0$.)
+  
+  Suppose towards a contradiction that $h$ is recursive.
+  Now construct a one-argument recursive function $f_m$ from it by putting $f_m(y) = f_n(h(m, y))$.
+  Now suppose $h(m,0)=0$, then $f_m(0)=0$ and $h(m,0)=1$, absurd; and suppose otherwise $h(m,0)=1$, then $f_m(0)$ is undefined and $h(m,0)=0$, absurd again. This completes the proof.
+\end{proof}
 % section recursive_functions (end)

@@ -9,7 +9,7 @@
 \usepackage{color}
 
 \theoremstyle{definition}
-\newtheorem{exercise}{Exercise}
+\newtheorem*{exercise}{Exercise}
 \newtheorem{example}{Example}
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}{Lemma}
@@ -30,7 +30,9 @@
     \kern.07em
   }%
 }
-\newcommand\id{\operatorname{id}}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Cn}{Cn}
+\DeclareMathOperator{\Mn}{Mn}
 \newcommand\myline{\noindent\makebox[\linewidth]{\rule{\textwidth}{0.4pt}}\break}
 \newcommand\tk{{\color{red}\textbf{TK$\implies$}}}
 
@@ -46,5 +48,6 @@ Garbage in, garbage out.
 \include{ch4}
 \include{ch5}
 \include{ch6}
+\include{ch7}
 
 \end{document}
